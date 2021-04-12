@@ -1,0 +1,9 @@
+flask
+connexion
+signxml
+pytest
+lxml
+sentry-sdk[flask]
+freezegun
+
+tma-saml>=0.4.2
