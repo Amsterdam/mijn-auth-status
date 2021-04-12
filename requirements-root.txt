@@ -7,3 +7,4 @@ sentry-sdk[flask]
 freezegun
 
 tma-saml>=0.4.2
+uwsgi
