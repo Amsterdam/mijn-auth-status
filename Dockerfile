@@ -5,6 +5,8 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
+RUN pip install uwsgi
+
 WORKDIR /app
 COPY requirements.txt /app/
 COPY uwsgi.ini /app/
