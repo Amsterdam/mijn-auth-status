@@ -1,9 +1,16 @@
+# flask and plugins
 flask
-connexion
-signxml
-pytest
-lxml
-sentry-sdk[flask]
+Flask-Testing
+openapi-core
+
+# testing / formatting tools
+flake8
+coverage
+black
 freezegun
 
+# error reporting
+sentry-sdk[flask]
+
+# Tma lib
 tma-saml>=0.4.2

@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Authentication status service
+  description: Api to verify logged in status. Uitsluitend voor intern gebruik door de Gemeente Amsterdam.
+  contact:
+    name: Datapunt Support
+    url: https://mijn.amsterdam.nl/
+    email: datapunt@amsterdam.nl
+  version: 2.0.0
+servers:
+  - url: http://localhost
+    description: Development server
+  - url: https://mijn.acc.amsterdam.nl/api
+    description: Acceptance server
+  - url: https://mijn.amsterdam.nl/api
+    description: Production server
+paths:
+  /status/health:
+    get:
+      description: Endpoint for checking wheter the server has started.
+      responses:
+        "200":
+          description: Returns "OK" when server is started.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthyResponse"
+  /auth/check:
+    parameters:
+      - name: x-saml-attribute-token1
+        in: header
+        description: TMA encoded BSN
+        required: true
+        schema:
+          type: string
+    get:
+      description: Toon of gebruiker authenticated is, soort gebruiker en tot wanneer
+        de sessie (minimaal) geldig is.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthCheckResponse'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    
+components:
+  schemas:
+    AuthInfo:
+      required:
+      - isAuthenticated
+      type: object
+      properties:
+        isAuthenticated:
+          type: boolean
+        userType:
+          type: string
+          enum:
+          - BURGER
+          - BEDRIJF
+        validUntil:
+          type: integer
+          description: unix timestamp in milliseconds.
+    AuthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+        content:
+          $ref: '#/components/schemas/AuthInfo'
+    HealthyResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OK
+        content:
+          type: string
+          enum:
+            - OK
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ERROR
+        message:
+          type: string
+          enum:
+            - TMA error occurred
+            - Server error occurred
+            - Request error occurred

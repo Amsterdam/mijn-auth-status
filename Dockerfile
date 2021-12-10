@@ -1,20 +1,24 @@
-FROM amsterdam/python:3.8-buster
-MAINTAINER datapunt@amsterdam.nl
+FROM amsterdam/python
+
+LABEL maintainer=datapunt@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1
 
-EXPOSE 8000
-
+RUN apt-get update && apt-get install -y
+RUN pip install --upgrade pip
 RUN pip install uwsgi
 
 WORKDIR /app
-COPY requirements.txt /app/
-COPY uwsgi.ini /app/
-RUN pip install --no-cache-dir -r requirements.txt
 
-COPY authstatus /app/authstatus
-COPY tests /app/tests
-COPY docker-entrypoint.sh /app/
-COPY docker-test.sh /app/
+COPY app ./app
+COPY scripts ./scripts
+COPY requirements.txt .
+COPY uwsgi.ini .
 
-CMD ["/app/docker-entrypoint.sh"]
+COPY test.sh .
+COPY .flake8 .
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+USER datapunt
+CMD uwsgi --ini /app/uwsgi.ini
