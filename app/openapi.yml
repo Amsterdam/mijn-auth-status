@@ -7,13 +7,6 @@ info:
     url: https://mijn.amsterdam.nl/
     email: datapunt@amsterdam.nl
   version: 2.0.0
-servers:
-  - url: http://localhost
-    description: Development server
-  - url: https://mijn.acc.amsterdam.nl/api
-    description: Acceptance server
-  - url: https://mijn.amsterdam.nl/api
-    description: Production server
 paths:
   /status/health:
     get:

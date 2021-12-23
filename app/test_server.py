@@ -1,4 +1,3 @@
-import os
 from datetime import datetime, timedelta, timezone
 from math import floor
 from unittest.mock import patch
